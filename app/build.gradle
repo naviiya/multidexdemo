@@ -1,8 +1,9 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "me.tstaurus.app.multidex"
         minSdkVersion 14
@@ -12,12 +13,23 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries = false
+//        multiDexExt {
+//            keepClasses += 'me.tstaurus.app.multidex.MainActivity.class'
+//        }
+        additionalParameters = ['--multi-dex',
+                                '--set-max-idx-number=10000',
+        '--main-dex-list=' + project.rootDir + '/app/multidex.keep']
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -29,3 +41,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:multidex:1.0.1'
 }
+
